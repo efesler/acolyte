@@ -6,7 +6,8 @@ import Keys._
 // Multi-module project build
 object Acolyte extends Build with Dependencies 
     with ScalacPlugin with ReactiveMongo 
-    with JdbcDriver with JdbcJava8 with JdbcScala with JdbcClojure with Studio {
+    with JdbcDriver with JdbcJava8 with JdbcScala with JdbcClojure with Anorm 
+    with Studio {
 
   val versionVariant = if (isJavaAtLeast("1.7")) "-j7p" else ""
 
@@ -17,13 +18,13 @@ object Acolyte extends Build with Dependencies
 
   lazy val root = Project(id = "acolyte", base = file(".")).
     aggregate(scalacPlugin/*, reactiveMongo*/,
-      jdbcDriver, jdbcScala, jdbcClojure, studio).
+      jdbcDriver, jdbcScala, anorm, jdbcClojure, studio).
     settings(
       organization in ThisBuild := "org.eu.acolyte",
       version in ThisBuild := s"1.0.35${versionVariant}",
       javaOptions in ThisBuild ++= Seq(
         "-source", javaVersion, "-target", javaVersion),
-      scalaVersion in ThisBuild := "2.10.4",
+      scalaVersion in ThisBuild := "2.11.7",
       crossScalaVersions in ThisBuild := Seq("2.10.4", "2.11.7"),
       publishTo in ThisBuild := Some(Resolver.file("file", 
         new File(Path.userHome.absolutePath+"/.m2/repository"))),
